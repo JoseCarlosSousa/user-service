@@ -1,6 +1,6 @@
 package pt.kkosmico.userservice.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import pt.kkosmico.userservice.dto.LoginRequestDTO;
 import pt.kkosmico.userservice.dto.LoginResponseDTO;
 import pt.kkosmico.userservice.model.User;
@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -22,10 +23,16 @@ public class UserController {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
-    /**
-     * Endpoint to register a new user into the platform.
-     */
-    @PostMapping("/register")
+    @PostMapping(value = "/register",
+            consumes = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE},
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
@@ -33,7 +40,16 @@ public class UserController {
     /**
      * Endpoint to authenticate an existing user.
      */
-    @PostMapping("/login")
+    @PostMapping(value = "/login",
+            consumes = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE},
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
         LoginResponseDTO response = userService.login(loginRequest);
         return ResponseEntity.ok(response);
