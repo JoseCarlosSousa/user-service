@@ -1,0 +1,14 @@
+pt/kkosmico/userservice/UserServiceApplication.class
+pt/kkosmico/userservice/dto/UserCreatedEventDTO.class
+pt/kkosmico/userservice/config/SecurityConfig.class
+pt/kkosmico/userservice/controller/UserController.class
+pt/kkosmico/userservice/service/UserService.class
+pt/kkosmico/userservice/repository/UserRepository.class
+pt/kkosmico/userservice/config/GlobalExceptionHandler.class
+pt/kkosmico/userservice/dto/ErrorResponseDTO.class
+pt/kkosmico/userservice/dto/LoginRequestDTO.class
+pt/kkosmico/userservice/config/RabbitMQConfig.class
+pt/kkosmico/userservice/model/User.class
+pt/kkosmico/userservice/dto/LoginResponseDTO.class
+pt/kkosmico/userservice/controller/HealthController.class
+pt/kkosmico/userservice/service/TokenService.class

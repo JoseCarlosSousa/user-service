@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8090:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      # Points your MySQL connection from inside the container to your computer's native MySQL instance
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/user_service_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootroot
+      # Points RabbitMQ connection to your computer's native RabbitMQ instance
+      - SPRING_RABBITMQ_HOST=host.docker.internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always

@@ -1,0 +1,14 @@
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/UserServiceApplication.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/config/GlobalExceptionHandler.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/config/RabbitMQConfig.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/config/SecurityConfig.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/controller/HealthController.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/controller/UserController.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/dto/ErrorResponseDTO.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/dto/LoginRequestDTO.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/dto/LoginResponseDTO.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/dto/UserCreatedEventDTO.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/model/User.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/repository/UserRepository.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/service/TokenService.java
+/Users/sousa/Documents/MeuProjecto/user-service/src/main/java/pt/kkosmico/userservice/service/UserService.java
