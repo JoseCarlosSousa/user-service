@@ -1,10 +1,10 @@
-# 1. Fase de Compilação (Build)
+# Step 1: Build stage
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# 2. Fase de Execução (Runtime)
+# Step 2: Run stage
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
