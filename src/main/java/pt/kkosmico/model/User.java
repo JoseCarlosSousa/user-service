@@ -36,4 +36,8 @@ public class User {
     private LocalDateTime updatedAt;
 
     private boolean active = true;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Customer customer;
 }

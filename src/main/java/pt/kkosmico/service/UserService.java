@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 import pt.kkosmico.config.RabbitMQConfig;
 import pt.kkosmico.dto.LoginRequestDTO;
 import pt.kkosmico.dto.LoginResponseDTO;
-import pt.kkosmico.dto.RegisterDTO;
+import pt.kkosmico.dto.RegisterRequestDTO;
+import pt.kkosmico.dto.RegisterResponseDTO;
 import pt.kkosmico.model.Customer;
 import pt.kkosmico.model.User;
 import pt.kkosmico.repository.CustomerRepository;
@@ -30,7 +31,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public RegisterDTO createUser(RegisterDTO dto) {
+    public RegisterResponseDTO createUser(RegisterRequestDTO dto) {
         // 1. Check if the email is already registered in the database
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new RuntimeException("Email is already in use");
@@ -65,35 +66,36 @@ public class UserService {
         } catch (Exception e) {
             System.err.println("Failed to publish message to RabbitMQ: " + e.getMessage());
         }
-        return new RegisterDTO(
-                savedUser.getId(),
+        return new RegisterResponseDTO(
+        		savedUser.getId(),
                 savedUser.getEmail(),
-                "",
                 savedCustomer.getFirstName(),
                 savedCustomer.getLastName()
         );
     }
 
-
-    /**
-     * Validates credentials and returns a real encrypted JWT token.
-     */
+    
     public LoginResponseDTO login(LoginRequestDTO loginRequest) {
-        // 1. Check if user exists by email
-        User user = userRepository.findByEmail(loginRequest.getEmail())
+
+        User user = userRepository.findByEmailWithCustomer(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
-        Customer customer = customerRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+        Customer customer = user.getCustomer();
 
-        // 2. Match raw password with DB encrypted hash
+        // 1. Match password
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid email or password");
         }
 
-        // 3. Generate the real production-ready JWT token
-        String realToken = tokenService.generateToken(new RegisterDTO(user.getId(), user.getEmail(), "", customer.getFirstName(), customer.getLastName()));
+        // 2. Generate JWT
+        String token = tokenService.generateToken(new RegisterResponseDTO(
+                user.getId(),
+                user.getEmail(),
+                customer.getFirstName(),
+                customer.getLastName()
+        ));
 
-        return new LoginResponseDTO(realToken, "Bearer");
+        return new LoginResponseDTO(token, "Bearer");
     }
+    
 }

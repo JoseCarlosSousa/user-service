@@ -3,7 +3,8 @@ package pt.kkosmico.controller;
 import org.springframework.http.MediaType;
 import pt.kkosmico.dto.LoginRequestDTO;
 import pt.kkosmico.dto.LoginResponseDTO;
-import pt.kkosmico.dto.RegisterDTO;
+import pt.kkosmico.dto.RegisterRequestDTO;
+import pt.kkosmico.dto.RegisterResponseDTO;
 import pt.kkosmico.model.User;
 import pt.kkosmico.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class UserController {
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE}
     )
-    public ResponseEntity<RegisterDTO> registerUser(@RequestBody RegisterDTO dto) {
+    public ResponseEntity<RegisterResponseDTO> registerUser(@RequestBody RegisterRequestDTO dto) {
         return ResponseEntity.ok(userService.createUser(dto));
     }
 

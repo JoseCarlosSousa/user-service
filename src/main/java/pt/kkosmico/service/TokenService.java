@@ -3,7 +3,7 @@ package pt.kkosmico.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
-import pt.kkosmico.dto.RegisterDTO;
+import pt.kkosmico.dto.RegisterResponseDTO;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -18,7 +18,7 @@ public class TokenService {
     /**
      * Generates a fully signed JSON Web Token using JJWT 0.12+ fluent API.
      */
-    public String generateToken(RegisterDTO dto) {
+    public String generateToken(RegisterResponseDTO dto) {
         // Creates a cryptographic key from our secret phrase string
         SecretKey key = Keys.hmacShaKeyFor(secretPhrase.getBytes(StandardCharsets.UTF_8));
 
