@@ -51,7 +51,7 @@ public class UserService {
         customer.setFirstName(dto.getFirstName());
         customer.setLastName(dto.getLastName());
 
-        Customer sustomer = customerRepository.save(customer);
+        Customer savedCustomer = customerRepository.save(customer);
 
 
         // 3. Publish the event to RabbitMQ broker asynchronously
@@ -69,8 +69,8 @@ public class UserService {
                 savedUser.getId(),
                 savedUser.getEmail(),
                 "",
-                customer.getFirstName(),
-                customer.getLastName()
+                savedCustomer.getFirstName(),
+                savedCustomer.getLastName()
         );
     }
 
@@ -92,7 +92,7 @@ public class UserService {
         }
 
         // 3. Generate the real production-ready JWT token
-        String realToken = tokenService.generateToken(new RegisterDTO("", user.getEmail(), "", customer.getFirstName(), customer.getLastName()));
+        String realToken = tokenService.generateToken(new RegisterDTO(user.getId(), user.getEmail(), "", customer.getFirstName(), customer.getLastName()));
 
         return new LoginResponseDTO(realToken, "Bearer");
     }
