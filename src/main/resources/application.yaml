@@ -38,6 +38,10 @@ spring:
     username: root
     password: rootroot
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
   rabbitmq:
     host: localhost
     port: 5672
