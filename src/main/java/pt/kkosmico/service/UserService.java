@@ -1,6 +1,12 @@
 package pt.kkosmico.service;
 
+import java.util.List;
+
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 import pt.kkosmico.config.RabbitMQConfig;
 import pt.kkosmico.dto.LoginRequestDTO;
 import pt.kkosmico.dto.LoginResponseDTO;
@@ -9,10 +15,6 @@ import pt.kkosmico.model.Customer;
 import pt.kkosmico.model.User;
 import pt.kkosmico.repository.CustomerRepository;
 import pt.kkosmico.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
