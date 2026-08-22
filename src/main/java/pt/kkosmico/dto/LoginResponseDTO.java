@@ -1,10 +1,12 @@
-package pt.kkosmico.userservice.dto;
+package pt.kkosmico.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor // Generates constructor with all fields to easily return the token
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginResponseDTO {
     private String token;
     private String type; // Usually "Bearer"

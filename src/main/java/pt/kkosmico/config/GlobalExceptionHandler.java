@@ -1,11 +1,11 @@
-package pt.kkosmico.userservice.config;
+package pt.kkosmico.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pt.kkosmico.userservice.dto.ErrorResponseDTO;
+import pt.kkosmico.dto.ErrorResponseDTO;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice

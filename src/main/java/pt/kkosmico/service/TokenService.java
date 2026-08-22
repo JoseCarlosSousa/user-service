@@ -1,9 +1,9 @@
-package pt.kkosmico.userservice.service;
+package pt.kkosmico.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
-import pt.kkosmico.userservice.model.User;
+import pt.kkosmico.dto.RegisterDTO;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -18,7 +18,7 @@ public class TokenService {
     /**
      * Generates a fully signed JSON Web Token using JJWT 0.12+ fluent API.
      */
-    public String generateToken(User user) {
+    public String generateToken(RegisterDTO dto) {
         // Creates a cryptographic key from our secret phrase string
         SecretKey key = Keys.hmacShaKeyFor(secretPhrase.getBytes(StandardCharsets.UTF_8));
 
@@ -27,9 +27,10 @@ public class TokenService {
 
         // Modern fluent builder syntax introduced in recent JJWT versions
         return Jwts.builder()
-                .subject(user.getEmail())         // The owner of the token (subject)
-                .claim("name", user.getName())    // Custom claim payload data
-                .claim("userId", user.getId())    // Custom claim payload data
+                .subject(dto.getEmail())         // The owner of the token (subject)
+                .claim("firstName", dto.getFirstName())    // Custom claim payload data
+                .claim("lastName", dto.getLastName())    // Custom claim payload data
+                .claim("userId", dto.getId())    // Custom claim payload data
                 .issuedAt(now)                    // Token creation timestamp
                 .expiration(expiryDate)           // Token death timestamp
                 .signWith(key)                    // Cryptographic signature block

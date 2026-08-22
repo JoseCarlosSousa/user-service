@@ -1,4 +1,4 @@
-package pt.kkosmico.userservice.config;
+package pt.kkosmico.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
