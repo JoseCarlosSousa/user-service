@@ -17,12 +17,13 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "user_id", unique = true, nullable = false)
-    private String userId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    private User user; 
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
     @Column(name = "phone_prefix")
     private String phonePrefix;

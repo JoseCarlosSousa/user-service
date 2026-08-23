@@ -37,7 +37,6 @@ public class User {
 
     private boolean active = true;
     
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Customer customer;
 }

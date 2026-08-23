@@ -48,7 +48,7 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         Customer customer = new Customer();
-        customer.setUserId(savedUser.getId());
+        customer.setUser(user); 
         customer.setFirstName(dto.getFirstName());
         customer.setLastName(dto.getLastName());
 
