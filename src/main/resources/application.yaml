@@ -7,17 +7,17 @@ server:
 
 spring:
   profiles:
-    active: prod # Set production as the default profile for cloud deployment
+    active: local
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL:-jdbc:mysql://localhost:3306/user_service_db}
+    username: ${SPRING_DATASOURCE_USERNAME:-root}
+    password: ${SPRING_DATASOURCE_PASSWORD:-rootroot}
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: update
   rabbitmq:
-    addresses: ${SPRING_RABBITMQ_ADDRESSES}
+    addresses: ${SPRING_RABBITMQ_ADDRESSES:-}
     template:
       retry:
         enabled: true
@@ -32,23 +32,24 @@ spring:
 # ==========================================
 spring:
   profiles:
-    active: local
+    active:
+      on-profile: local
+      
   datasource:
     url: jdbc:mysql://localhost:3306/user_service_db?useSSL=false&serverTimezone=UTC
     username: root
     password: rootroot
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
-    open-in-view: false
     show-sql: true
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
-      format_sql: true
-      highlight_sql: true
+        format_sql: true
+        highlight_sql: true
 
   rabbitmq:
+    addresses: null
     host: localhost
     port: 5672
     username: guest
@@ -66,9 +67,12 @@ spring:
 spring:
   config:
     activate:
-      on-profile: prod # Applied only when spring.profiles.active=prod
+      on-profile: prod
 
+      # TO execute if not running in docker
+      #    docker run -d --name local-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
   rabbitmq:
+    addresses: null
     host: ://cloudamqp.com
     port: 5671
     username: saqjmled
@@ -76,28 +80,3 @@ spring:
     virtual-host: saqjmled
     ssl:
       enabled: true
-
-#server:
-#  port: ${PORT:8080}
-#  address: 0.0.0.0
-#
-#spring:
-#  datasource:
-#    url: ${SPRING_DATASOURCE_URL}
-#    username: ${SPRING_DATASOURCE_USERNAME}
-#    password: ${SPRING_DATASOURCE_PASSWORD}
-#  jpa:
-#    open-in-view: false
-#    hibernate:
-#      ddl-auto: update
-#  rabbitmq:
-#    addresses: ${SPRING_RABBITMQ_ADDRESSES}
-#    template:
-#      retry:
-#        enabled: true
-#        initial-interval: 3000ms
-#        max-attempts: 3
-#    listener:
-#      simple:
-#        initialize-consumers: true
-

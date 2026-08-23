@@ -12,6 +12,7 @@ import pt.kkosmico.dto.LoginRequestDTO;
 import pt.kkosmico.dto.LoginResponseDTO;
 import pt.kkosmico.dto.RegisterRequestDTO;
 import pt.kkosmico.dto.RegisterResponseDTO;
+import pt.kkosmico.dto.UserCreatedEvent;
 import pt.kkosmico.model.Customer;
 import pt.kkosmico.model.User;
 import pt.kkosmico.repository.CustomerRepository;
@@ -56,22 +57,33 @@ public class UserService {
 
 
         // 3. Publish the event to RabbitMQ broker asynchronously
-        try {
-            rabbitTemplate.convertAndSend(
-                    RabbitMQConfig.USER_EXCHANGE,
-                    RabbitMQConfig.USER_CREATED_ROUTING_KEY,
-                    savedUser
-            );
-            System.out.println("Message successfully published to RabbitMQ!");
-        } catch (Exception e) {
-            System.err.println("Failed to publish message to RabbitMQ: " + e.getMessage());
+        UserCreatedEvent event = new UserCreatedEvent();
+        event.setId(savedUser.getId());
+        event.setEmail(savedUser.getEmail());
+        if (savedUser.getCustomer() != null) {
+            event.setFirstName(savedUser.getCustomer().getFirstName());
+            event.setLastName(savedUser.getCustomer().getLastName());
         }
+        sendQueue(event);
         return new RegisterResponseDTO(
         		savedUser.getId(),
                 savedUser.getEmail(),
                 savedCustomer.getFirstName(),
                 savedCustomer.getLastName()
         );
+    }
+    
+    private void sendQueue(UserCreatedEvent event) {
+        try {
+            rabbitTemplate.convertAndSend(
+                    RabbitMQConfig.USER_EXCHANGE,
+                    RabbitMQConfig.USER_CREATED_ROUTING_KEY,
+                    event
+            );
+            System.out.println("Message successfully published to RabbitMQ!");
+        } catch (Exception e) {
+            System.err.println("Failed to publish message to RabbitMQ: " + e.getMessage());
+        }
     }
 
     
