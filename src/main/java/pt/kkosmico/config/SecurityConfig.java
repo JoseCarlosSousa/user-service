@@ -34,16 +34,21 @@ public class SecurityConfig {
 	                    // Allow CORS Pre-Flight requests
 	                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 
-	                    // Restrict GET users endPoint to ADMIN and MANAGER roles only
+	                    // Restrict GET users endpoint to ADMIN and MANAGER roles only
 	                    .requestMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN", "MANAGER")
 	                    
-	                    // Public endPoints for registration and login
+	                    // 🌟 ADD THIS BLOCK: Allow any authenticated user (USER, ADMIN, MANAGER) to access their own profile
+	                    .requestMatchers(HttpMethod.GET, "/api/users/me").authenticated()
+	                    .requestMatchers(HttpMethod.PUT, "/api/users/me").authenticated()
+	                    
+	                    // Public endpoints for registration and login
 	                    .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
 	                    .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
 	                    
 	                    // Any other request must be authenticated
 	                    .anyRequest().authenticated()
 	            )
+
 	            // 🌟 ADD THIS LINE HERE: Apply our custom JWT filter before UsernamePasswordAuthenticationFilter
 	            .addFilterBefore(securityFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 

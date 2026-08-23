@@ -31,11 +31,16 @@ public class SecurityFilter extends OncePerRequestFilter {
         
         if (token != null) {
             // 2. Validate the token and extract the user's login/email
-            String login = tokenService.validateToken(token); // Adjust based on your method name in TokenService
+            String login = tokenService.validateToken(token); 
             
             if (login != null) {
                 // 3. Extract the role from the token
-                String role = tokenService.getRoleFromToken(token); // Adjust based on your method name in TokenService
+                String role = tokenService.getRoleFromToken(token); 
+                
+                // 🌟 FIX: Fallback to 'USER' if the token claim is missing or legacy to prevent 403 crashes
+                if (role == null || role.trim().isEmpty()) {
+                    role = "USER";
+                }
                 
                 // 4. Create authority with the required ROLE_ prefix for hasAnyRole()
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
