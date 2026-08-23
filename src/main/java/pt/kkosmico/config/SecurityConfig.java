@@ -1,5 +1,6 @@
 package pt.kkosmico.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,33 +21,45 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        // 👈 2. ADICIONA ESTA LINHA: Permite que o navegador faça o teste de CORS livremente
-                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+	@Autowired
+	private SecurityFilter securityFilter;
 
-                        .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
-                        .anyRequest().authenticated()
-                );
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	    http
+	            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+	            .csrf(csrf -> csrf.disable())
+	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	            .authorizeHttpRequests(authorize -> authorize
+	                    // Allow CORS Pre-Flight requests
+	                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 
-        return http.build();
-    }
+	                    // Restrict GET users endPoint to ADMIN and MANAGER roles only
+	                    .requestMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN", "MANAGER")
+	                    
+	                    // Public endPoints for registration and login
+	                    .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+	                    .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
+	                    
+	                    // Any other request must be authenticated
+	                    .anyRequest().authenticated()
+	            )
+	            // 🌟 ADD THIS LINE HERE: Apply our custom JWT filter before UsernamePasswordAuthenticationFilter
+	            .addFilterBefore(securityFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+
+	    return http.build();
+	}
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // Permite qualquer site (incluindo o teu do Railway e o localhost)
+        configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Aplica a todas as rotas da API
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 

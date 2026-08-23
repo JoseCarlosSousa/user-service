@@ -5,7 +5,7 @@ import pt.kkosmico.dto.LoginRequestDTO;
 import pt.kkosmico.dto.LoginResponseDTO;
 import pt.kkosmico.dto.RegisterRequestDTO;
 import pt.kkosmico.dto.RegisterResponseDTO;
-import pt.kkosmico.model.User;
+import pt.kkosmico.dto.UserResponseDTO;
 import pt.kkosmico.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    @GetMapping(
+    	    produces = {
+    	        MediaType.APPLICATION_JSON_VALUE,
+    	        MediaType.APPLICATION_XML_VALUE,
+    	        MediaType.APPLICATION_YAML_VALUE
+    	    }
+    	)
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
@@ -39,7 +45,7 @@ public class UserController {
     }
 
     /**
-     * Endpoint to authenticate an existing user.
+     * EndPoint to authenticate an existing user.
      */
     @PostMapping(value = "/login",
             consumes = {

@@ -13,6 +13,7 @@ import pt.kkosmico.dto.LoginResponseDTO;
 import pt.kkosmico.dto.RegisterRequestDTO;
 import pt.kkosmico.dto.RegisterResponseDTO;
 import pt.kkosmico.dto.UserCreatedEvent;
+import pt.kkosmico.dto.UserResponseDTO;
 import pt.kkosmico.model.Customer;
 import pt.kkosmico.model.User;
 import pt.kkosmico.repository.CustomerRepository;
@@ -28,8 +29,11 @@ public class UserService {
     private final TokenService tokenService; // Injected modern TokenService
     private final RabbitTemplate rabbitTemplate;
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponseDTO> findAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserResponseDTO::new)
+                .toList();
     }
 
     public RegisterResponseDTO createUser(RegisterRequestDTO dto) {
@@ -69,7 +73,8 @@ public class UserService {
         		savedUser.getId(),
                 savedUser.getEmail(),
                 savedCustomer.getFirstName(),
-                savedCustomer.getLastName()
+                savedCustomer.getLastName(),
+                savedUser.getRole()
         );
     }
     
@@ -104,7 +109,8 @@ public class UserService {
                 user.getId(),
                 user.getEmail(),
                 customer.getFirstName(),
-                customer.getLastName()
+                customer.getLastName(),
+                user.getRole()
         ));
 
         return new LoginResponseDTO(token, "Bearer");

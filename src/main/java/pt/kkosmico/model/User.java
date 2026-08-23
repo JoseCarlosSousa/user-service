@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.LastModifiedDate;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -33,6 +35,7 @@ public class User {
     private LocalDateTime createdAt = java.time.LocalDateTime.now();
 
     @Column(name = "updated_at")
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     private boolean active = true;
