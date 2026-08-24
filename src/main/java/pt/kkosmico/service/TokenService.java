@@ -3,6 +3,8 @@ package pt.kkosmico.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.kkosmico.dto.RegisterResponseDTO;
 import javax.crypto.SecretKey;
@@ -12,8 +14,8 @@ import java.util.Date;
 @Service
 public class TokenService {
 
-    // A secure 256-bit key secret phrase (In production, load this from environment variables)
-    private final String secretPhrase = "myUltraSecretKeyForJwtTokenGeneration2026!!!";
+	@Value("${JWT_SECRET}")
+	private String secretPhrase;
     private final long expirationTimeInMs = 86400000; // 24 hours in milliseconds
 
     private SecretKey getSigningKey() {
