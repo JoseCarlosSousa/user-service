@@ -5,6 +5,8 @@ server:
   port: ${PORT:8080}
   address: 0.0.0.0
 
+JWT_SECRET: "${JWT_SECRET_ENV:ChaveSecretaPadraoDeSegurancaParaDesenvolvimentoLocalComPeloMenos32Caracteres}"
+
 spring:
   profiles:
     active: local
