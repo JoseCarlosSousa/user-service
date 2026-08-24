@@ -1,6 +1,7 @@
 package pt.kkosmico.dto;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class CustomerResponseDTO implements Serializable {
 	
     private static final long serialVersionUID = 1L;
     
-	private String id;
+	private UUID id;
     private String firstName;
     private String lastName;
     private String phonePrefix;

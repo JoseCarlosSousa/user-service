@@ -7,6 +7,7 @@ import pt.kkosmico.model.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +16,7 @@ public class UserResponseDTO implements Serializable {
 	
     private static final long serialVersionUID = 1L;
     
-	private String id;
+	private UUID id;
     private String email;
     private String role;
     private LocalDateTime createdAt;

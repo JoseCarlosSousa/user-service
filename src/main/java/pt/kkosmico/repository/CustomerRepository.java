@@ -5,8 +5,9 @@ import org.springframework.stereotype.Repository;
 import pt.kkosmico.model.Customer;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, String> {
-    Optional<Customer> findByUserId(String userId);
+public interface CustomerRepository extends JpaRepository<Customer, UUID> {
+    Optional<Customer> findByUserId(UUID userId);
 }
