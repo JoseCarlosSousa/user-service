@@ -5,6 +5,12 @@ server:
   port: ${PORT:8080}
   address: 0.0.0.0
 
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:myUltraSecretKeyForJwtTokenGeneration2026!!!}
+
+
 spring:
   profiles:
     active: local
